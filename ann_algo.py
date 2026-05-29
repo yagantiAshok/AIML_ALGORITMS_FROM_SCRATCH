@@ -35,13 +35,13 @@ def ann_from_scratch(path):
     df = data.to_numpy()
 
     w1, w2, w3, w4, w5, w6, w7, w8, w9 = 0.1, 0.5, 0.2, 0.7, 0.2, 0.5, 0.4, 0.2, 0.9
-    b1, b2, b3 = 0, 0, 0
+    b1, b2, b3 = 0.4,0,1
     w10, w11, w12, w13, w14, w15, w16, w17, w18 = 0.3, 0.1, 0.2, 0.9, 0.3, 0.4, 0.2, 0.1, 0
     w19 = 0.6
     w20 = 0.3
     lr = 0.01
 
-    for epoch in range(200):
+    for epoch in range(1):
         target_1_loss = 0.0
         target_0_loss = 0.0
 
@@ -69,6 +69,8 @@ def ann_from_scratch(path):
         der_w19 = 0.0
         der_w20 = 0.0
 
+        loss_sgimoid_der = 0
+
         for i in range(len(df)):
 
             x1, x2, x3, x4, x5, x6, x7, x8, x9 = df[i][:9].tolist()
@@ -87,6 +89,8 @@ def ann_from_scratch(path):
                 target_0_loss += -math.log(1 - y_hat + epsilon)
 
             der_of_loss_and_sigmoid = loss_derivective * sigmoid_derivative(y_hat)
+
+            loss_sgimoid_der+= der_of_loss_and_sigmoid
 
             der_w20 += der_of_loss_and_sigmoid * a2
             der_w19 += der_of_loss_and_sigmoid * a1
@@ -116,7 +120,6 @@ def ann_from_scratch(path):
             der_w1 += same_for_z1_weights * x1
             der_b1 += same_for_z1_weights * 1
         
-        logger.info(f"Derivative of sigmoid and loss is {der_of_loss_and_sigmoid}")
 
         length = len(df)
         w1 -= lr * (der_w1 / length)
@@ -146,6 +149,7 @@ def ann_from_scratch(path):
         total_error = (target_1_loss + target_0_loss) / length
 
         logger.info(f"for epoch {epoch} error {total_error}")
+        logger.info(f"for epoch {epoch} loss sigmoid erivative {loss_sgimoid_der/length}")
         logger.info(f"weights for {epoch} {w1,w2,w3,w4,w5,w6,w7,w8,w9,w10,w11,w12,w13,w14,w15,w16,w17,w18,w19,w20,b1,b2,b3}")
 
         # print(total_error)
