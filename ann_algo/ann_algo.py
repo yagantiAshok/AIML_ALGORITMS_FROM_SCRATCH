@@ -32,13 +32,16 @@ def ann_from_scratch(path):
     data = pd.read_csv(path)
     data.drop("sample", axis=1, inplace=True)
     data["Class"] = data["Class"].replace({2: 0, 4: 1})
+    data = data.iloc[:10]
     df = data.to_numpy()
+    w1, w2, w3, w4, w5, w6, w7, w8, w9 = 1.0, 0.2, -0.5, 0.8, -0.1, 0.6, -0.9, 0.3, 0.0
+    b1 = 0.1
 
-    w1, w2, w3, w4, w5, w6, w7, w8, w9 = 0.1, 0.5, 0.2, 0.7, 0.2, 0.5, 0.4, 0.2, 0.9
-    b1, b2, b3 = 0.4,0,1
-    w10, w11, w12, w13, w14, w15, w16, w17, w18 = 0.3, 0.1, 0.2, 0.9, 0.3, 0.4, 0.2, 0.1, 0
-    w19 = 0.6
-    w20 = 0.3
+    w10, w11, w12, w13, w14, w15, w16, w17, w18 = -0.2, 0.9, 0.1, -0.7, 0.4, -0.3, 0.5, -0.8, 0.2
+    w19 = 0.3
+    w20 = 0.1
+    b2 = -0.2
+    b3 = 0
     lr = 0.01
 
     for epoch in range(1):
@@ -73,6 +76,13 @@ def ann_from_scratch(path):
 
         for i in range(len(df)):
 
+
+            loss_derivective = 0
+
+            print(loss_derivective)
+
+
+
             x1, x2, x3, x4, x5, x6, x7, x8, x9 = df[i][:9].tolist()
             z1 = x1 * w1 + x2 * w2 + x3 * w3 + x4 * w4 + x5 * w5 + x6 * w6 + x7 * w7 + x8 * w8 + x9 * w9 + b1
             a1 = relu(z1)
@@ -81,14 +91,30 @@ def ann_from_scratch(path):
             z3 = a1 * w19 + a2 * w20 + b3
             y_hat = sigmoid(z3)
 
+
             if df[i][9] == 1:
                 loss_derivective = -1 / (y_hat + epsilon)
                 target_1_loss += -math.log(y_hat + epsilon)
             else:
                 loss_derivective = 1 / (1 - y_hat + epsilon)
                 target_0_loss += -math.log(1 - y_hat + epsilon)
+            
+            print(loss_derivective)
+            
+            logger.info(f" for {i} row actual = {df[i][9]}")
+            logger.info(f"for {i} loss is {loss_derivective}")
+            
+            logger.info(f"z1 = {z1:.4f} and z2 = {z2:.4f}")
+            logger.info(f"a1 = {a1:.4f} and a2 = {a2:.4f}")
+            logger.info(f"z3 = {z3:.4f} ")
+            logger.info(f"y_hat = {y_hat:.4f}")
+
 
             der_of_loss_and_sigmoid = loss_derivective * sigmoid_derivative(y_hat)
+
+            logger.info(f"derivative of loss and sigmoid = {der_of_loss_and_sigmoid:.4f}")
+            logger.info("\n\n\n")
+
 
             loss_sgimoid_der+= der_of_loss_and_sigmoid
 
@@ -152,9 +178,9 @@ def ann_from_scratch(path):
         logger.info(f"for epoch {epoch} loss sigmoid erivative {loss_sgimoid_der/length}")
         logger.info(f"weights for {epoch} {w1,w2,w3,w4,w5,w6,w7,w8,w9,w10,w11,w12,w13,w14,w15,w16,w17,w18,w19,w20,b1,b2,b3}")
 
-        # print(total_error)
+    #     # print(total_error)
 
-    # print(total_error)
+    # # print(total_error)
     return total_error
 
 path = os.path.join("notebooks","Data_cls.csv")
