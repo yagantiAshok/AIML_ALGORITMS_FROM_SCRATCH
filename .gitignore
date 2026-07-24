@@ -4,3 +4,4 @@
 aiml_venv/
 notebooks/
 log/
+*__pycache__*

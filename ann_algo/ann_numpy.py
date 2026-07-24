@@ -27,8 +27,8 @@ def sigmoid(z_value):
 
 
 
-def ANN(path):
 
+def ANN(path):
 
     data = pd.read_csv(path)
 
