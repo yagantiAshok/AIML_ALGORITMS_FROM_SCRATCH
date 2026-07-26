@@ -21,7 +21,6 @@ def relu(value):
  
     return np.maximum(0,value)
 
-
 def sigmoid(z_value):
     return 1 / (1 + np.exp(-z_value))
 
