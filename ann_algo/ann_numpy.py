@@ -134,6 +134,4 @@ def ANN(path):
 
     return total_error
 
-
-
 print(ANN(os.path.join("notebooks","Data_cls.csv")))
