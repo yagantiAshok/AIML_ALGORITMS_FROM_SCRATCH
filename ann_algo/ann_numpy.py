@@ -78,6 +78,7 @@ def ANN(path):
 
         loss = - (y * (np.log(y_hat+epsilon)) + ((1-y) * np.log(1-y_hat+epsilon)))
 
+
         total_error = np.mean(loss)
 
         if epoch%25==0:
