@@ -8,17 +8,14 @@ from  logger import logger
 
 
 def relu_derivative(value):
-  
     return (value>0).astype(float)
 
 
 def sigmoid_derivative(output):
-
     return output * (1 - output)
 
 
 def relu(value):
- 
     return np.maximum(0,value)
 
 def sigmoid(z_value):
