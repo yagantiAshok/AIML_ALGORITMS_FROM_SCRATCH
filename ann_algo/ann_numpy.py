@@ -18,7 +18,6 @@ def sigmoid(z_value):
 
 
 def ANN(path):
-
     data = pd.read_csv(path)
     data.drop("sample",axis=1,inplace=True)
     data["Class"] = data["Class"].replace({2: 0, 4: 1})
